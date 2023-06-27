@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class map{// 栈结构的封装
+        constructor(){
+            this.items=[];
+        }
+        
+        push(item){//压栈操作，往栈里面添加元素
+           this.items.push(item);
+        }
+     
+        pop(){//出栈操作，从栈中取出元素，并返回取出的那个元素
+           return this.items.pop();
+        }
+             
+        peek(){//查看栈顶元素
+            return this.items[this.items.length-1];
+        }
+
+        isEmpty(){//判断栈是否为空
+            return this.items.length===0;
+        }
+        
+        size(){//获取栈中元素个数
+            return this.items.size;
+        }
+
+        toString(){//返回以字符串形式的栈内元素数据
+            let result = "";
+            for (let item of this.items) {
+                result += item + " ";
+                }
+            return result;
+        }
+        }
+        
+        function des2bin(num){
+           var strack=new map();
+           var b=0
+           while(num>0){
+               strack.push(num%2);
+               num=Math.floor(num/2); 
+               b++;   
+           }    
+           console.log(b);
+           for(;b>0;b--){
+               console.log(strack.items[b-1]);
+           }
+           
+           let a="";
+           while(!strack.isEmpty()){    
+              a+=strack.pop();
+           }
+           return a;
+          }
+       
+        alert(des2bin(8))
+     
+
+    </script>
+</body>
+</html>

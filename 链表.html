@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Node {
+            constructor(data) {
+                this.data = data;
+                this.next = null;
+            }
+        }
+
+        class LinkedList {//  链表结构的封装             
+            head = null;
+            length = 0;
+
+            append(data) {
+                var node = new Node(data);
+                if (this.length == 0) {
+                    this.head = node;
+                } else {
+                    let current = this.head //创建一个指针指向头节点
+                    while (current.next) {//判断指针当前所指节点的next是否为空，不为空则指向下一个节点,一直指到最后一个节点为止
+                        current = current.next;
+                    }
+                    current.next = node;//使最后一个节点指向 新的节点
+                }
+                this.length++;
+            }
+
+
+            insert(position, data) {
+                var node = new Node(data);
+                if (position == 0 || position > this.length) { return false; }
+                //判断插入位置来对应处理
+                if (position == 0) {
+                    node.next = this.head;//将node.next指向原本head指向的节点
+                    this.head = node;//将head重新指向新节点
+                } else {
+                    var current = this.head;
+                    var previous = null;
+                    var index = 0;  
+                    while (index++ < position) {//使当前指针指向目标位置节点 ，如position==1，则循环一次指向了第二个节点
+                        previous=current;
+                        current = current.next;
+                    }                  
+                    node.next=current;
+                    previous.next=node;
+                }
+                length++;
+                return true;
+            }
+
+
+
+
+            toString() {
+                var listString = "";
+                var current = this.head
+                while (current) {
+                    listString += current.data + '';
+                    current = current.next;
+                }
+
+                return listString;
+            }
+
+
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

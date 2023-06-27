@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class LinkedList {//  链表结构的封装             
+            head = null;
+            length = 0;
+
+            Node = class {//内部类
+                constructor(data) {
+                    this.data = data;
+                    this.next = null;
+                }
+            }
+
+            append(data) {
+                var node = new this.Node(data);
+                if (this.length == 0) {
+                    this.head = node;//这里使头指针指向了第一个节点
+                } else {
+                    let current = this.head //创建一个指针指向头节点
+                    while (current.next) {//判断指针当前所指节点的next是否为空，不为空则指向下一个节点,一直指到最后一个节点为止
+                        current = current.next;
+                    }
+                    current.next = node;//使最后一个节点指向 新的节点
+                }
+                this.length++;
+            }
+
+
+            insert(position, data) {
+                var node = new this.Node(data);
+                if (position < 0 || position > this.length) { return false; }
+                //判断插入位置来对应处理
+                if (position == 0) {
+                    node.next = this.head;//将node.next指向原本head指向的节点
+                    this.head = node;//将head重新指向新节点
+                } else {
+                    var current = this.head;
+                    var previous = null;   //用来指向前一个节点
+                    var index = 0;
+                    while (index++ < position) {//使当前指针指向目标位置节点 ，如position==1，则循环一次指向了索引为1的节点
+                        previous = current;
+                        current = current.next;
+                    }
+                    node.next = current;
+                    previous.next = node;
+                }
+                length++;
+                return true;
+            }
+
+            get(position) {//获取数据
+                if (position < 0 || position >= this.length) { return null; }
+                let current = this.head;
+                let index = 0;
+                while (index++ < position) {
+                    current = current.next;
+                }
+                return current.data;
+
+            }
+
+            indexof(data) {//获取元素下标值
+                let current = this.head;
+                let index = 0;
+                do {
+                    if (current.data == data) {
+                        return index;
+                    }
+                    current = current.next;
+                } while (index++ < this.length - 1)
+                return -1;
+            }
+
+            updata(position, data) {//修改数据
+                if (position < 0 || position >= this.length) { return null; }
+                let current = this.head;
+                let index = 0;
+                while (index++ < position) {
+                    current = current.next;
+                }
+                current.data = data;
+                return true;
+            }
+
+            removeAt(position) {//删除指定位置的一项
+                if (position < 0 || position >= this.length) { return null; }
+                var current = this.head;
+                if (position == 0) {
+                    this.head = this.head.next;
+                } else {
+                    var previous = null;   //用来指向前一个节点
+                    var index = 0;
+                    while (index++ < position) {//使当前指针指向目标位置节点 ，如position==1，则循环一次指向了索引为1的节点
+                        previous = current;
+                        current = current.next;
+                    }
+                    previous.next = current.next;
+                }
+                this.length--;
+            }
+
+            remove(data) {//删除指定数据
+                return this.removeAt(this.indexof(data));
+            }
+
+            isEmpty() {
+                if (this.length == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            size() {
+                return this.length;
+            }
+
+            toString() {
+                var listString = "";
+                var current = this.head
+                while (current) {
+                    listString += current.data + '';
+                    current = current.next;
+                }
+
+                return listString;
+            }
+
+
+        }
+
+        const linkedList = new LinkedList();
+        // 测试 append 方法
+        linkedList.append("A");
+        linkedList.append("B");
+        linkedList.append("C");
+        linkedList.append("A");
+
+
+        linkedList.remove("B")
+        console.log(linkedList);
+    </script>
+</body>
+
+</html>

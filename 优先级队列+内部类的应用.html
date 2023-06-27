@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        class PriorityQueue {//  队列结构的封装             
+
+            QueueElement = class { //内部类
+                constructor(element, priority) {
+                    this.element = element;
+                    this.priority = priority;
+                }
+            }
+
+            items = [];
+            enqueue(element, priority) {
+                var queueElement = new this.QueueElement(element, priority);
+                if (this.items.length == 0) {
+                    this.items.push(queueElement)
+                } else {
+                    let added = false;//用于判断当经过一轮比较之后任然没有找到,优先级值更小的情况
+                    for (let i = 0; i < this.items.length; i++) {
+                        // 让新插入的元素进行优先级比较，priority 值越小，优先级越大
+                        if (this.items[i].priority > queueElement.priority) {
+                            this.items.splice(i, 0, queueElement);
+                            added = true;
+                            break;
+                        }
+                    }
+                    if (!added) {
+                        this.items.push(queueElement);
+                    }
+                }
+            }
+
+
+
+            dequeue() {//出队操作，从队首取出元素，并返回取出的那个元素
+                return this.items.shift();
+            }
+
+            front() {//查看队首元素
+                return this.items[0];
+            }
+
+            isEmpty() {//判断队列是否为空
+                return this.items.length === 0;
+            }
+
+            size() {//获取队列中元素个数
+                return this.items.length;
+            }
+
+            toString() {//返回以字符串形式的队列元素数据
+                let result = "";
+                for (let i = 0; i < this.items.length; i++) {
+                    result += this.items[i].element + '-' + this.items[i].priority;
+                    return result;
+                }
+            }
+
+        }
+
+        var priorityQueue = new PriorityQueue();
+
+        // 入队 enqueue() 测试
+        priorityQueue.enqueue("A", 10);
+        priorityQueue.enqueue("B", 15);
+        priorityQueue.enqueue("C", 11);
+        priorityQueue.enqueue("D", 20);
+        priorityQueue.enqueue("E", 18);
+        console.log(priorityQueue.items);
+        priorityQueue.dequeue();
+        console.log(priorityQueue.items);
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Set {
+            items = {};
+
+            add(value) {//添加元素
+                if (this.has(value)) {//添加失败
+                    return false;
+                }
+                this.items[value] = value;//通过这种方式为对象添加了属性并且键与值都是添加的值
+                return true;
+            }
+
+            has(value) {//判断对象中是否已经含有该数据
+                return this.items.hasOwnProperty(value)//hasOwnProperty()方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是，是否有指定的键）
+            }
+
+            remove(value) {//删除元素
+                if (!this.has(value)) {
+                    return false;
+                }
+                delete this.items[value];
+                return true;
+            }
+
+            clear() {
+                this.items = {}//直接赋一个新的空对象
+            }
+
+            size() {//返回长度   // Object.keys() 方法会返回一个由一个给定对象的自身可枚举属性组成的数组，数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致。
+                return Object.keys(this.items).length;
+            }
+
+            value() {//获取集合中的所有值 返回的是一个数组
+                return Object.keys(this.items)
+            }
+
+            union(otherSet) {//求并集
+                var unionset = new Set();
+                for (let i = 0; i < this.size(); i++) {//把当前集合的值全部赋值给了并集集合
+                    unionset.add(this.value()[i]);
+                }
+
+                for (let i = 0; i < otherSet.size(); i++) {//将另一个集合的值赋值给并集集合 当遇到相同的值时会添加失败
+                    unionset.add(otherSet.value()[i])
+                }
+                
+                return unionset;
+
+            }
+
+            instersection(otherSet){//求并集
+               var instersectionSet = new Set();
+               for(let i=0;i<this.size();i++){
+                    if(otherSet.has(this.value()[i])){
+                          instersectionSet.add(this.value()[i]);
+                    }
+               }
+               return instersectionSet;
+            }
+
+            difference(otherSet){//求差集
+                var differenceSet = new Set();
+                for (let i=0;i<this.size();i++){
+                    if(!otherSet.has(this.value()[i])){
+                        differenceSet.add(this.value()[i]);
+                    }
+                }
+                return differenceSet;
+            }
+
+            subset(otherSet){//判断当前集合是否是其他集合的子集
+                for(let i=0;i<otherSet.size();i++){
+                if(!this.has(otherSet.value()[i])){
+                       return false;
+                }
+                }
+                return true;
+            }
+        }
+
+        var set = new Set();
+        var set2 = new Set();
+        var set3= new Set();      
+        console.log(set.add(888));
+        console.log(set.add(777));
+        console.log(set2.add(123));
+        console.log(set2.add(777));
+        console.log(set3.add(777));
+        console.log(set.union(set2).value());
+        console.log(set.instersection(set2).value());
+        console.log(set.difference(set2).value());
+        console.log(set.subset(set2));
+        console.log(set.subset(set3));
+    </script>
+</body>
+
+</html>

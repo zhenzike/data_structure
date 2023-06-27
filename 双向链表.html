@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <script>
+        class DoublyLinkedList {//  链表结构的封装             
+            head = null;
+            tail = null;
+            length = 0;
+
+            DoublyNode = class {//内部类
+                constructor(data) {
+                    this.previous = null;
+                    this.data = data;
+                    this.next = null;
+                }
+            }
+
+            append(data) {
+                var node = new this.DoublyNode(data);
+                if (this.length == 0) {
+                    this.head = node;//这里使头指针指向了第一个节点
+                    this.tail = node;//使尾指针指向第一个节点
+                } else {
+                    this.tail.next = node;//直接通过尾指针找到最后一个节点
+                    node.previous = this.tail;
+                    this.tail = node;
+                }
+                this.length++;
+            }
+
+
+            insert(position, data) {
+                var node = new this.DoublyNode(data);
+                if (position < 0 || position > this.length) { return false; }
+                //判断插入位置来对应处理
+                if (this.length == 0) {
+                    this.head = node;
+                    this.tail = node;
+                } else {
+                    if (position == 0) {
+                        this.head.previous = node;
+                        node.next = this.head;//将node.next指向原本head指向的节点
+                        this.head = node;//将head重新指向新节点
+                    } else if (position == this.length) {
+                        this.tail.next = node;//直接通过尾指针找到最后一个节点
+                        node.previous = this.tail;
+                        this.tail = node;
+                    } else {
+                        var current = this.head;
+                        var index = 0;
+                        while (index++ < position) {//使当前指针指向目标位置节点 ，如position==1，则循环一次指向了索引为1的节点
+                            current = current.next;
+                        }
+                        node.next = current;
+                        node.previous = current.previous;
+                        current.previous.next = node;
+                        current.previous = node;
+                    }
+                }
+                length++;
+                return true;
+            }
+
+            get(position) {//获取数据
+                if (position < 0 || position >= this.length) { return null; }
+                let current = this.head;
+                let index = 0;
+                while (index++ < position) {
+                    current = current.next;
+                }
+                return current.data;
+
+            }
+
+            indexof(data) {//获取元素下标值
+                let current = this.head;
+                let index = 0;
+                do {
+                    if (current.data == data) {
+                        return index;
+                    }
+                    current = current.next;
+                } while (index++ < this.length - 1)
+                return -1;
+            }
+
+            updata(position, data) {//修改数据
+                if (position < 0 || position >= this.length) { return null; }
+                let current = this.head;
+                let index = 0;
+                while (index++ < position) {
+                    current = current.next;
+                }
+                current.data = data;
+                return true;
+            }
+
+            removeAt(position) {//删除指定位置的一项
+                if (position < 0 || position >= this.length) { return null; }
+                var current = this.head;
+                if (this.length == 1) {
+                    this.head = null;
+                    this.tail = null;
+                } else {
+                    if (position == 0) {
+                        this.head = this.head.next;
+                        this.head.next.previous = null;
+                    } else if (position == this.length - 1) {
+                        this.tail.previous.next = null;
+                        this.tail = this.tail.previous;
+                    } else {
+                        let index = 0;
+                        while (index++ < position) {
+                            current = current.next;
+                        }
+                        current.next.previous = current.previous;
+                        current.previous.next = current.next;
+                        current.previous = null;
+                        current.next = null;
+                    }
+                }
+                this.length--;
+                return current.data;
+            }
+
+            remove(data) {//删除指定数据
+                return this.removeAt(this.indexof(data));
+            }
+
+
+
+
+            isEmpty() {
+                if (this.length == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            size() {
+                return this.length;
+            }
+
+            toString() {
+                return this.backWardString();
+            }
+
+            forwardString() {//向前遍历
+                let current = this.tail;
+                let resultString = "";
+                while (current) {
+                    resultString += current.data + ''
+                    current = current.previous;
+                }
+                return resultString;
+            }
+
+            backWardString() {//向后遍历
+                let current = this.head;
+                let resultString = "";
+                while (current) {
+                    resultString += current.data + ''
+                    current = current.next;
+                }
+
+                return resultString;
+            }
+
+
+        }
+
+        const doublylinkedList = new DoublyLinkedList();
+        // 测试 append 方法
+        doublylinkedList.append("A");
+        doublylinkedList.append("B");
+        doublylinkedList.append("C");
+        doublylinkedList.append("A");
+        console.log(doublylinkedList.indexof('B'));
+    </script>
+</body>
+
+</html>
